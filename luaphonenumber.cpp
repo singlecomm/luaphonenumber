@@ -4,6 +4,7 @@
 
 #include "phonenumbers/phonenumber.pb.h"
 #include "phonenumbers/phonenumberutil.h"
+#include "phonenumbers/geocoding/phonenumber_offline_geocoder.h"
 
 extern "C" {
   #include "lua.h"
@@ -15,6 +16,7 @@ lua_State* L;
 
 using i18n::phonenumbers::PhoneNumber;
 using i18n::phonenumbers::PhoneNumberUtil;
+using i18n::phonenumbers::PhoneNumberOfflineGeocoder;
 
 using std::string;
 
@@ -34,6 +36,14 @@ const char *_get_country(PhoneNumber number) {
   phone_util.GetRegionCodeForNumber(number, &_country);
 
   return _country.c_str();
+}
+
+const char *_get_location(PhoneNumber number, const char *language, const char *country) {
+  string location;
+
+  location = PhoneNumberOfflineGeocoder().GetDescriptionForNumber(number, icu::Locale(language, country));
+
+  return location.c_str();
 }
 
 const char *_get_type(PhoneNumber number) {
@@ -105,6 +115,21 @@ extern "C" int get_country(lua_State* L) {
   return 1;
 }
 
+extern "C" int get_location(lua_State* L) {
+  PhoneNumber number;
+
+  const char *input    = luaL_checkstring(L, 1);
+  const char *country  = luaL_checkstring(L, 2);
+  const char *language = luaL_checkstring(L, 3);
+  const char *_country = luaL_checkstring(L, 4);
+
+  number = _parse(input, country);
+
+  lua_pushstring(L, _get_location(number, language, _country));
+
+  return 1;
+}
+
 extern "C" int get_type(lua_State* L) {
   PhoneNumber number;
 
@@ -136,15 +161,21 @@ extern "C" int parse(lua_State* L) {
   PhoneNumber number;
   string      formatted_number;
 
-  const char *input   = luaL_checkstring(L, 1);
-  const char *country = luaL_checkstring(L, 2);
+  const char *input    = luaL_checkstring(L, 1);
+  const char *country  = luaL_checkstring(L, 2);
+  const char *language = luaL_checkstring(L, 3);
+  const char *_country = luaL_checkstring(L, 4);
 
   number = _parse(input, country);
 
-  lua_createtable(L, 0, 6);
+  lua_createtable(L, 0, 7);
 
   lua_pushstring(L, "country");
   lua_pushstring(L, _get_country(number));
+  lua_settable  (L, -3);
+
+  lua_pushstring(L, "location");
+  lua_pushstring(L, _get_location(number, language, _country));
   lua_settable  (L, -3);
 
   lua_pushstring(L, "type");
@@ -173,6 +204,7 @@ extern "C" int parse(lua_State* L) {
 extern "C" int luaopen_luaphonenumber(lua_State* L) {
   static const struct luaL_reg phonenumber[] = {
     {"get_country",     get_country},
+    {"get_location",    get_location},
     {"get_type",        get_type},
     {"format",          format},
     {"parse",           parse},
