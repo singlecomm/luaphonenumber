@@ -1,8 +1,7 @@
 package = "luaphonenumber"
 version = "1.0-1"
 source = {
-  url = "git://github.com/singlecomm/luaphonenumber",
-  tag = "v1.0-1",
+  url = "git://github.com/singlecomm/luaphonenumber"
 }
 description = {
   summary = "Lua bindings for libphonenumber",
@@ -14,5 +13,5 @@ dependencies = {
   "lua >= 5.1"
 }
 build = {
-  type = "make",
+  type = "make"
 }
