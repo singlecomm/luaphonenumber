@@ -7,6 +7,12 @@ Ensure build dependencies are readily available on your system:
 * [ICU library](http://site.icu-project.org/)
 
 ```sh
+luarocks install luaphonenumber
+```
+
+or
+
+```sh
 luarocks https://raw.githubusercontent.com/singlecomm/luaphonenumber/master/luaphonenumber-1.0-1.rockspec
 ```
 
