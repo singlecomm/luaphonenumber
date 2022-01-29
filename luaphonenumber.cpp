@@ -25,12 +25,12 @@ const PhoneNumberUtil& phone_util = *PhoneNumberUtil::GetInstance();
 PhoneNumber _parse(const char* input, const char *default_country) {
   PhoneNumber number;
 
-  phone_util.Parse(input, "US", &number);
+  phone_util.Parse(input, default_country, &number);
 
   return number;
 }
 
-const char *_get_country(PhoneNumber number) {
+string _get_country(PhoneNumber number) {
   string _country;
 
   phone_util.GetRegionCodeForNumber(number, &_country);
@@ -38,7 +38,7 @@ const char *_get_country(PhoneNumber number) {
   return _country.c_str();
 }
 
-const char *_get_location(PhoneNumber number, const char *language, const char *country) {
+string _get_location(PhoneNumber number, const char *language, const char *country) {
   string location;
 
   location = PhoneNumberOfflineGeocoder().GetDescriptionForNumber(number, icu::Locale(language, country));
