@@ -81,7 +81,7 @@ const char *_get_type(PhoneNumber number) {
   }
 }
 
-const char* _format(PhoneNumber number, const char *pattern) {
+string _format(PhoneNumber number, const char *pattern) {
   string formatted_number;
 
   PhoneNumberUtil::PhoneNumberFormat format;
@@ -110,7 +110,7 @@ extern "C" int get_country(lua_State* L) {
 
   number = _parse(input, country);
 
-  lua_pushstring(L, _get_country(number));
+  lua_pushstring(L, _get_country(number).c_str());
 
   return 1;
 }
@@ -125,7 +125,7 @@ extern "C" int get_location(lua_State* L) {
 
   number = _parse(input, country);
 
-  lua_pushstring(L, _get_location(number, language, _country));
+  lua_pushstring(L, _get_location(number, language, _country).c_str());
 
   return 1;
 }
@@ -152,7 +152,7 @@ extern "C" int format(lua_State* L) {
 
   number = _parse(input, country);
 
-  lua_pushstring(L, _format(number, __format));
+  lua_pushstring(L, _format(number, __format).c_str());
 
   return 1;
 }
@@ -171,11 +171,11 @@ extern "C" int parse(lua_State* L) {
   lua_createtable(L, 0, 7);
 
   lua_pushstring(L, "country");
-  lua_pushstring(L, _get_country(number));
+  lua_pushstring(L, _get_country(number).c_str());
   lua_settable  (L, -3);
 
   lua_pushstring(L, "location");
-  lua_pushstring(L, _get_location(number, language, _country));
+  lua_pushstring(L, _get_location(number, language, _country).c_str());
   lua_settable  (L, -3);
 
   lua_pushstring(L, "type");
@@ -183,19 +183,19 @@ extern "C" int parse(lua_State* L) {
   lua_settable  (L, -3);
 
   lua_pushstring(L, "E164");
-  lua_pushstring(L, _format(number, "E164"));
+  lua_pushstring(L, _format(number, "E164").c_str());
   lua_settable  (L, -3);
 
   lua_pushstring(L, "INTERNATIONAL");
-  lua_pushstring(L, _format(number, "INTERNATIONAL"));
+  lua_pushstring(L, _format(number, "INTERNATIONAL").c_str());
   lua_settable  (L, -3);
 
   lua_pushstring(L, "NATIONAL");
-  lua_pushstring(L, _format(number, "NATIONAL"));
+  lua_pushstring(L, _format(number, "NATIONAL").c_str());
   lua_settable  (L, -3);
 
   lua_pushstring(L, "RFC3966");
-  lua_pushstring(L, _format(number, "RFC3966"));
+  lua_pushstring(L, _format(number, "RFC3966").c_str());
   lua_settable  (L, -3);
 
   return 1;
