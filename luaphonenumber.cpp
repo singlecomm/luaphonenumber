@@ -202,7 +202,7 @@ extern "C" int parse(lua_State* L) {
 }
 
 extern "C" int luaopen_luaphonenumber(lua_State* L) {
-  static const struct luaL_reg phonenumber[] = {
+  static const struct luaL_Reg phonenumber[] = {
     {"get_country",     get_country},
     {"get_location",    get_location},
     {"get_type",        get_type},
