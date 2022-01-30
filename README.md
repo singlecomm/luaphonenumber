@@ -1,5 +1,5 @@
 # luaphonenumber
-Lua 5.1 bindings for libphonenumber
+Lua 5.1+ bindings for libphonenumber
 
 ### Install
 Ensure build dependencies are readily available on your system:
