@@ -102,6 +102,19 @@ string _format(PhoneNumber number, const char *pattern) {
   return formatted_number.c_str();
 }
 
+extern "C" int is_valid(lua_State* L) {
+  PhoneNumber number;
+
+  const char *input   = luaL_checkstring(L, 1);
+  const char *country = luaL_checkstring(L, 2);
+
+  number = _parse(input, country);
+
+  lua_pushboolean(L, phone_util.IsValidNumber(number));
+
+  return 1;
+}
+
 extern "C" int get_country(lua_State* L) {
   PhoneNumber number;
 
@@ -203,6 +216,7 @@ extern "C" int parse(lua_State* L) {
 
 extern "C" int luaopen_luaphonenumber(lua_State* L) {
   static const struct luaL_Reg phonenumber[] = {
+    {"is_valid",        is_valid},
     {"get_country",     get_country},
     {"get_location",    get_location},
     {"get_type",        get_type},

@@ -16,7 +16,7 @@ or
 luarocks https://raw.githubusercontent.com/singlecomm/luaphonenumber/master/luaphonenumber-1.0-1.rockspec
 ```
 
-Typical install outout sample:
+Typical install output sample:
 ```
 Using luaphonenumber-1.0-1.rockspec... switching to 'build' mode
 Cloning into 'luaphonenumber'...
@@ -119,7 +119,7 @@ Output:
 
 ```
 Country of +18045551234: US
-Country of 8045551234: US
+Country of 8045551234: ZZ
 Country of +447400555123: GB
 Country of 07400555123: ZZ
 ```
@@ -184,4 +184,31 @@ Output:
 Type of +18045551234: FIXED_LINE_OR_MOBILE
 Type of +442085551234: FIXED_LINE
 Type of +40740555123: MOBILE
+```
+
+##### is_valid( input, country )
+
+Returns `true` if `input` is a valid phone number in `country`.
+
+```lua
+phonenumber = require 'luaphonenumber'
+
+local input1 = "+18045551234"
+local country1 = "us"
+local input2 = "+442085551234"
+local country2 = "gb"
+local input3 = "+40740555123"
+local country3 = "ro"
+
+print( "Is " .. input1 .. " valid? " .. phonenumber.is_valid( input1, country1 ) )
+print( "Is " .. input2 .. " valid? " .. phonenumber.is_valid( input2, country2 ) )
+print( "Is " .. input3 .. " valid? " .. phonenumber.is_valid( input3, country3 ) )
+```
+
+Output:
+
+```
+Is +18045551234 valid? true
+Is +442085551234 valid? true
+Is +40740555123 valid? true
 ```
