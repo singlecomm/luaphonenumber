@@ -30,3 +30,8 @@ assert(phonenumber.get_location( "+442085551234", "gb", "en", "US" ) == 'London'
 assert(phonenumber.get_type( "+18045551234", "us" ) == 'FIXED_LINE_OR_MOBILE')
 assert(phonenumber.get_type( "+442085551234", "gb" ) == 'FIXED_LINE')
 assert(phonenumber.get_type( "+40740555123", "ro" ) == 'MOBILE')
+
+-- Test `is_valid`
+assert(phonenumber.is_valid( "+18045551234", "us" ))
+assert(phonenumber.is_valid( "+442085551234", "gb" ))
+assert(phonenumber.is_valid( "+40740555123", "ro" ))
